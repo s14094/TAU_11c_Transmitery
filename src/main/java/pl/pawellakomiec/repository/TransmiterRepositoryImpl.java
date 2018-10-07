@@ -112,15 +112,12 @@ public class TransmiterRepositoryImpl implements TransmiterRepository{
 
     @Override
     public void deleteTransmiter(Transmiter transmiter) throws SQLException{
-
         deleteByIdStmt.setInt(1, transmiter.getId());
         deleteByIdStmt.executeUpdate();
-
     }
 
     @Override
     public void updateTransmiter(int id, Transmiter newTransmiter) throws SQLException{
-
         updateStmt.setInt(2, id);
         updateStmt.setString(1, newTransmiter.getName());
         updateStmt.executeUpdate();

@@ -57,12 +57,6 @@ public class TransmiterRepositoryTest {
         transmiterRepository.addTransmiter(transmiter4);
     }
 
-    @Ignore
-    @Test
-    public void say_hello() {
-        String message = "Hello";
-        assertEquals("Message: ", message);
-    }
 
     @Test
     public void get_all() throws SQLException{
@@ -118,6 +112,7 @@ public class TransmiterRepositoryTest {
         }
     }
 
+    @Ignore
     @After
     public void dropTable() throws SQLException {
         transmiterRepository.dropDatatable();
