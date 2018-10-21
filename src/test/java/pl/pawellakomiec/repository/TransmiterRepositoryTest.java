@@ -30,21 +30,28 @@ public class TransmiterRepositoryTest {
         transmiter1.setName("transmiter1");
         transmiter1.setPrice(100);
         transmiter1.setPower(40);
+        transmiter1.setOperationDate("initRepository" + transmiterRepository.getActuallTime());
 
         transmiter2.setId(2);
         transmiter2.setName("transmiter2");
         transmiter2.setPrice(200);
         transmiter2.setPower(40);
+        transmiter2.setOperationDate("initRepository" + transmiterRepository.getActuallTime());
+
 
         transmiter3.setId(3);
         transmiter3.setName("transmiter3");
         transmiter3.setPrice(300);
         transmiter3.setPower(40);
+        transmiter3.setOperationDate("initRepository" + transmiterRepository.getActuallTime());
+
 
         transmiter4.setId(4);
         transmiter4.setName("transmiter4");
         transmiter4.setPrice(400);
         transmiter4.setPower(40);
+        transmiter4.setOperationDate("initRepository" + transmiterRepository.getActuallTime());
+
 
         transmiterRepository.addTransmiter(transmiter1);
         transmiterRepository.addTransmiter(transmiter2);
@@ -60,7 +67,11 @@ public class TransmiterRepositoryTest {
 
     @Test
     public void get_specific_transmiter() throws SQLException{
-        Transmiter transmiter2 = transmiterRepository.getById(2);
+        Transmiter transmiter2 = transmiterRepository.getById(3);
+
+        String string = "get_specific_transmiter" + transmiterRepository.getActuallTime();
+        transmiterRepository.updateAction(3, string);
+
         if (transmiter2 == null) {
             exception.expect(ClassNotFoundException.class);
         }
@@ -73,6 +84,7 @@ public class TransmiterRepositoryTest {
         transmiter5.setName("createtransmiter5");
         transmiter5.setPrice(50);
         transmiter5.setPower(30);
+        transmiter5.setOperationDate("create_transmiter" + transmiterRepository.getActuallTime());
         transmiterRepository.addTransmiter(transmiter5);
         assertNotNull(transmiterRepository.getById(transmiter5.getId()));
     }
@@ -91,6 +103,8 @@ public class TransmiterRepositoryTest {
     @Test
     public void search_transmiter() throws SQLException {
         int idToFind = 1;
+        String string = "search_transmiter" + transmiterRepository.getActuallTime();
+        transmiterRepository.updateAction(1, string);
         assertNotNull(transmiterRepository.getById(idToFind));
     }
 
@@ -102,11 +116,16 @@ public class TransmiterRepositoryTest {
             exception.expect(ClassNotFoundException.class);
         }
 
-        int updateId = 1;
+        int updateId = 2;
         transmiter2.setId(22);
         transmiter2.setName("transmiter222");
         transmiter2.setPrice(222);
+        transmiter2.setOperationDate("ds");
         transmiterRepository.updateTransmiter(updateId, transmiter2);
+
+        String string = "update_transmiter" + transmiterRepository.getActuallTime();
+        transmiterRepository.updateAction(updateId, string);
+
         assertEquals(transmiterRepository.getById(updateId).getName(), transmiter2.getName());
 
         for (Transmiter transmiter1 : transmiterRepository.getAll()) {
@@ -116,7 +135,7 @@ public class TransmiterRepositoryTest {
 
     @After
     public void dropTable() throws SQLException {
-        transmiterRepository.dropDatatable();
+        //transmiterRepository.dropDatatable();
     }
 }
 

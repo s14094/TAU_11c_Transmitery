@@ -41,7 +41,7 @@ public class TransmiterRepositoryMockTest {
     @Before
     public void setupDatabase() throws SQLException {
 
-        when(connectionMock.prepareStatement("INSERT INTO Transmiter (name, price, power) VALUES (?, ?, ?)")).thenReturn(insertStatementMock);
+        when(connectionMock.prepareStatement("INSERT INTO Transmiter (name, price, power, operationDate) VALUES (?, ?, ?, ?)")).thenReturn(insertStatementMock);
         when(connectionMock.prepareStatement("SELECT * FROM Transmiter")).thenReturn(selectStatementMock);
         when(connectionMock.prepareStatement("SELECT * FROM Transmiter WHERE id = ?")).thenReturn(getTransmiterByIdStmt);
 
@@ -50,7 +50,7 @@ public class TransmiterRepositoryMockTest {
         transmiterRepositoryMock = mock(TransmiterRepositoryImpl.class);
         transmiterRepository.setConnection(connectionMock);
 
-        verify(connectionMock).prepareStatement("INSERT INTO Transmiter (name, price, power) VALUES (?, ?, ?)");
+        verify(connectionMock).prepareStatement("INSERT INTO Transmiter (name, price, power, operationDate) VALUES (?, ?, ?, ?)");
         verify(connectionMock).prepareStatement("SELECT * FROM Transmiter");
         verify(connectionMock).prepareStatement("SELECT * FROM Transmiter WHERE id = ?");
 
@@ -134,6 +134,9 @@ public class TransmiterRepositoryMockTest {
         verify(mockedResultSet, times(2)).next();
 
     }
+
+
+
     @Test(expected = IllegalStateException.class)
     public void checkExceptionWhenAddingNullAdding() throws Exception {
         when(insertStatementMock.executeUpdate()).thenThrow(new SQLException());

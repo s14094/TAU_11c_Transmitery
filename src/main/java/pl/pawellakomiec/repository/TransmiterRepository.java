@@ -3,6 +3,7 @@ package pl.pawellakomiec.repository;
 import pl.pawellakomiec.domain.Transmiter;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.sql.Connection;
 
@@ -24,5 +25,9 @@ public interface TransmiterRepository {
 
     void updateTransmiter(int id, Transmiter newTransmiter) throws SQLException;
 
+    void updateAction(int id, String action) throws SQLException;
+
     void dropDatatable() throws SQLException;
+
+    String getActuallTime();
 }
