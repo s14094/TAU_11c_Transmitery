@@ -2,10 +2,7 @@ package pl.pawellakomiec.repository;
 
 import pl.pawellakomiec.domain.Transmiter;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +15,7 @@ public class TransmiterRepositoryImpl implements TransmiterRepository{
     private PreparedStatement deleteTableStmt;
     private PreparedStatement updateStmt;
     private PreparedStatement deleteByIdStmt;
+    private PreparedStatement getByNameStmt;
 
     public TransmiterRepositoryImpl(Connection connection) throws SQLException {
         this.connection = connection;
@@ -27,11 +25,20 @@ public class TransmiterRepositoryImpl implements TransmiterRepository{
         setConnection(connection);
     }
 
+    public TransmiterRepositoryImpl() throws SQLException {
+        this.connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb");
+        if (!isDatabaseReady()) {
+            createTables();
+        }
+        this.setConnection(connection);
+    }
+
     public void setConnection(Connection connection) throws SQLException{
         this.connection = connection;
         addTransmiterStmt = connection.prepareStatement("INSERT INTO Transmiter (name, price, power) VALUES (?, ?, ?)");
         getAllStmt = connection.prepareStatement("SELECT * FROM Transmiter");
         getByIdStmt = connection.prepareStatement("SELECT * FROM Transmiter WHERE id = ?");
+        getByNameStmt = connection.prepareStatement("SELECT * FROM Transmiter WHERE name = ?");
         deleteTableStmt = connection.prepareStatement("DROP TABLE Transmiter");
         updateStmt = connection.prepareStatement("UPDATE Transmiter SET name = ? WHERE id = ?");
         deleteByIdStmt = connection.prepareStatement("DELETE FROM Transmiter WHERE id = ?");
@@ -96,6 +103,24 @@ public class TransmiterRepositoryImpl implements TransmiterRepository{
             return null;
         }
     }
+
+    @Override
+    public Transmiter getByName(String name) throws SQLException{
+        getByIdStmt.setString(1, name);
+        ResultSet results = getByIdStmt.executeQuery();
+        if(results.next()) {
+            Transmiter transmiter = new Transmiter();
+            transmiter.setId(results.getInt("id"));
+            transmiter.setName(results.getString("name"));
+            transmiter.setPrice(results.getInt("price"));
+            transmiter.setPower(results.getInt("power"));
+            return transmiter;
+        }
+        else{
+            return null;
+        }
+    }
+
 
     @Override
     public void addTransmiter(Transmiter transmiter) {

@@ -6,6 +6,7 @@ public class Transmiter {
     private String name;
     private int price;
     private int power;
+    private String operationDate;
 
     public int getId() {
         return id;
@@ -39,4 +40,11 @@ public class Transmiter {
         this.power = power;
     }
 
+    public String getOperationDate() {
+        return operationDate;
+    }
+
+    public void setOperationDate(String operationDate) {
+        this.operationDate = operationDate;
+    }
 }

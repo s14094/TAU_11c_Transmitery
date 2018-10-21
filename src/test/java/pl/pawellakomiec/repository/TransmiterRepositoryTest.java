@@ -5,9 +5,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import pl.pawellakomiec.domain.Transmiter;
-import pl.pawellakomiec.repository.TransmiterRepository;
-import pl.pawellakomiec.repository.TransmiterRepositoryFactory;
-import org.junit.Assert.*;
 
 import java.sql.SQLException;
 
@@ -16,14 +13,12 @@ import static org.junit.Assert.*;
 @RunWith(JUnit4.class)
 public class TransmiterRepositoryTest {
 
-    TransmiterRepository transmiterRepository;
-
     @Rule
     public final ExpectedException exception = ExpectedException.none();
-
+    TransmiterRepository transmiterRepository;
 
     @Before
-    public void initRepository() {
+    public void initRepository() throws SQLException {
 
         transmiterRepository = TransmiterRepositoryFactory.getInstance();
         Transmiter transmiter1 = new Transmiter();
@@ -59,8 +54,16 @@ public class TransmiterRepositoryTest {
 
 
     @Test
-    public void get_all() throws SQLException{
+    public void get_all() throws SQLException {
         assertNotNull(transmiterRepository.getAll());
+    }
+
+    @Test
+    public void get_specific_transmiter() throws SQLException{
+        Transmiter transmiter2 = transmiterRepository.getById(2);
+        if (transmiter2 == null) {
+            exception.expect(ClassNotFoundException.class);
+        }
     }
 
     @Test
@@ -72,12 +75,11 @@ public class TransmiterRepositoryTest {
         transmiter5.setPower(30);
         transmiterRepository.addTransmiter(transmiter5);
         assertNotNull(transmiterRepository.getById(transmiter5.getId()));
-
     }
 
     @Test
     public void delete_transmiter() throws SQLException {
-        Transmiter transmiter3 = transmiterRepository.getById(3);
+        Transmiter transmiter3 = transmiterRepository.getById(2);
         transmiterRepository.deleteTransmiter(transmiter3);
 
         if (transmiterRepository.getAll().size() > 0) {
@@ -112,7 +114,6 @@ public class TransmiterRepositoryTest {
         }
     }
 
-    @Ignore
     @After
     public void dropTable() throws SQLException {
         transmiterRepository.dropDatatable();
