@@ -1,11 +1,9 @@
 Given a transmiter
-When set arguments like name: audi, model: a4, code: 4466
+When set arguments like name: sony, model: 33, price: 199
 When add it to arraylist
-Then adding should return audi for Transmiter object with code 4466
+Then adding should return sony for Transmiter object with price sony
 
 Given a transmiter
-When set arguments like name: bmw, model: 7, code: 3
+When set arguments like name: samsung, model: 7, price: 3
 When add it to arraylist
-Then adding should return bmw for Transmiter object with code 3
-When set new name Volvo for transmiter with code 3
-Then check if data has been updated for transmiter with code 3 and new name Volvo
+Then destroy item with code samsung

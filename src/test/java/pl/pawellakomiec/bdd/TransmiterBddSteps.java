@@ -23,7 +23,7 @@ public class TransmiterBddSteps {
         service = new TransmiterRepositoryImpl();
     }
 
-    @When("set arguments like name: $a, power: $b, price: $c")
+    @When("set arguments like name: $a, model: $b, price: $c")
     public void createNewTransmiter(String a, Integer b, Integer c) {
         transmiter.setName(a);
         transmiter.setPower(b);
@@ -35,14 +35,15 @@ public class TransmiterBddSteps {
         service.addTransmiter(transmiter);
     }
 
-    @When("set new name $name for transmiter with code $code")
-    public void setNewNameForTransmiter(String name, Integer code) {
-        //service.deleteTransmiter();
+    @Then("destroy item with code $code")
+    public void setNewNameForTransmiter(String code) throws SQLException {
+        Transmiter transmiter1 = service.getByName(code);
+        service.deleteTransmiter(transmiter1);
     }
 
     @Then("adding should return $name for Transmiter object with code $code")
-    public void shouldAdd(String name, int transmiterCode) throws SQLException {
-        Transmiter transmiter = service.getById(transmiterCode);
+    public void shouldAdd(String name, String code) throws SQLException {
+        Transmiter transmiter = service.getByName(name);
         assertEquals(name, transmiter.getName());
     }
 
